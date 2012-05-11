@@ -1,0 +1,18 @@
+{
+  "author": "KimY <yungookim@gmail.com>",
+  "name": "devimon",
+  "description": "device monitor",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yungookim/devimon.git"
+  },
+  "main": "devimon",
+  "dependencies": {
+	"express" : "2.5.x",
+	"socket.io" : "0.9.x",
+	"twilio" : "0.4.0"
+
+
+  }
+}

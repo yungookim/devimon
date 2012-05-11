@@ -1,0 +1,27 @@
+<html>
+<head></head>
+<body>
+	<label>Number for security call</label>
+	<input id="phoneNumb">
+	<label>Country</label>
+	
+	<button onclick="init_socket();">Start</button>
+
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		function init_socket(){
+			alert("Init");
+			var numb = document.getElementById('phoneNumb').value;
+			
+			var socket = io.connect('http://localhost:4000');
+			socket.emit('clientInfo', { id : 'kimy',
+											number: numb, 
+											pass : 'asdf' });
+			socket.on('cid', function(data){
+				console.log(data);
+			});	
+		}
+	</script>
+</body>
+</html>
