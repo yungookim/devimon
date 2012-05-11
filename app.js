@@ -2,13 +2,13 @@ var app = require('express').createServer(),
 	io = require('socket.io').listen(app),
 	TwilioClient = require('twilio').Client,
 	client = new TwilioClient('AC724b4080ddd54f7b8f76c5635b7c13da',
-				 'bb72ce3adfed239513c4ac8ead423feb', 'localhost:4000');
+				 'bb72ce3adfed239513c4ac8ead423feb', '69.164.219.86');
 	
-io.set('close timeout', 10);
-io.set('heartbeat timeout', 10);
+var MESSAGE = ", you should go check your device right now!";
 
-var MESSAGE = "Somebody or something has closed off your device's wifi connection, better go check!";
-
+//io.set('close timeout', 10);
+//io.set('heartbeat timeout', 10);
+//io.set('log level', 3);
 app.listen(4000);
 
 app.get('/', function (req, res) {
@@ -16,31 +16,37 @@ app.get('/', function (req, res) {
 });
 
 io.sockets.on('connection', function (socket) {
+	var NUMBER, NAME, CLOSE_REQUESTED;
 	socket.emit('cid', { id : socket.id, systime : Date.now()});
-  var NUMBER;//Make sure to have it in +1########## format
 	socket.on('clientInfo', function (data) {
-		console.log("id : " + data.id);
-  	console.log("Number : " + data.number);
-    NUMBER = data.number;
-  	console.log("Password : " + data.pass);
+		console.log("Number : " + data.number);
+//		socket.set('number', data.number);
+//		socket.set('name', data.name);
+//		socket.set('close_requested', false);	
+			NUMBER = data.number;
+			NAME = data.name;
+			CLOSE_REQUESTED = false;
 	});
-	socket.on('disconnect', function () { 
-		console.log("Client disconnected ID : " + socket.id);
-    console.log("Client disconnected Phone Number : " + NUMBER);
-		var phone = client.getPhoneNumber('+16479316110');
-    phone.setup(function(){
-      phone.sendSms(NUMBER, MESSAGE, null, function(result){
-        console.log(result);
-          // if (call.smsDetails.status != 'queued'){
-          //   //msging failed. try again after a few seconds?
-          // }
-      });
-    });
-    socket.on('close', function(){
-      console.log('closed');
-    });
 
-
-
+	socket.on('disconnect', function () {
+		console.log("close requested : " + CLOSE_REQUESTED);
+		if (!req){
+			var phone = client.getPhoneNumber('+16479316110');
+			phone.setup(function(){
+				phone.sendSms(NUMBER, NAME + MESSAGE, null, function(result){
+					console.log(result);
+					// if (call.smsDetails.status != 'queued'){
+					//msging failed. try again after a few seconds?
+					// }	
+				});
+			});
+		} else {
+			console.log('log it and current socket is gone');
+		}
+	});
+	socket.on('client_close', function(){
+		console.log('=====disconnecting');
+		CLOSE_REQUESTED = true;
+		socket.disconnect();
 	});
 });
