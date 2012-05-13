@@ -1,0 +1,56 @@
+<html>
+<head></head>
+
+<body>
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket;
+		function init_socket(){
+			var numb = document.getElementById('phoneNumb').value;
+			var _name = document.getElementById("name").value;
+			if (numb){
+				socket = io.connect('/');
+				socket.emit('clientInfo', { id : 'kimy', name : _name, 
+								number: numb, 
+								pass : 'asdf' });
+				socket.on('cid', function(data){
+					setStatus('connection established');
+					console.log(data);
+				});	
+			} else {alert("enter number man-_-");}
+		}
+
+		function disconnect(){
+			socket.emit('client_close');
+			setStatus('service disabled');
+		}
+
+		function setStatus(status){
+			document.getElementById('status').innerHTML = status;
+		}
+	</script>
+<h1>What it is</h1>
+<p>Proof of concept for idea by Kyu Lee<br>
+Basically, it's a precautionary measure for situations like 
+being in a coffee shop alone and have to step out for smoke 
+or have to use the bathroom.<br>
+Before leaving your laptop unattended, log into the current website,
+leave the website open and on your way!. 
+When someone tries to take your laptop, you will get an immediate SMS notification.</p>
+
+<br>
+<p>Just type your phone number and name in and press start!
+No log out funcionality is supported yet :)
+</p>
+	<label>Your Phone Number</label>
+	<input id="phoneNumb"><br>
+	<label>Your Name</label>
+	<input id="name"><br>
+	<label>Country</label>
+	<input id="Country" value="Canada" disabled><br>
+	<p>Status : <a id="status" style="color:green;"></a></p>
+	<button onclick="init_socket();">Start</button>
+	<button onclick="disconnect()">Disconnect</button>
+</body>
+</html>
