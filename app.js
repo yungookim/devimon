@@ -7,7 +7,7 @@ var app = require('express').createServer(),
 var MESSAGE = ", you should go check your device right now!";
 
 //io.set('close timeout', 10);
-io.set('heartbeat timeout', 30);
+io.set('heartbeat timeout', 10);
 //io.set('log level', 3);
 app.listen(4000);
 
