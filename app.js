@@ -12,7 +12,7 @@ io.set('heartbeat timeout', 10);
 app.listen(4000);
 
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+  res.sendfile(__dirname + '/html/index.html');
 });
 
 io.sockets.on('connection', function (socket) {
@@ -33,20 +33,21 @@ io.sockets.on('connection', function (socket) {
 		if (!CLOSE_REQUESTED){
 			var phone = client.getPhoneNumber('+16479316110');
 			phone.setup(function(){
-				phone.sendSms(NUMBER, NAME + MESSAGE, null, function(result){
-					console.log(result);
+				//phone.sendSms(NUMBER, NAME + MESSAGE, null, function(result){
+					//console.log(result);
+					console.log("assume txt msg sent");
 					return;
 					// if (call.smsDetails.status != 'queued'){
 					//msging failed. try again after a few seconds?
 					// }	
-				});
+				//});
 			});
 		} else {
 			console.log('log it and current socket is gone');
+			return;
 		}
 	});
 	socket.on('client_close', function(){
-		console.log('=====disconnecting');
 		CLOSE_REQUESTED = true;
 		socket.disconnect();
 	});
