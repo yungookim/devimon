@@ -8,15 +8,21 @@
 		function init_socket(){
 			var numb = document.getElementById('phoneNumb').value;
 			var _name = document.getElementById("name").value;
+			var _pass = document.getElementById("pass").value;
 			if (numb){
 				socket = io.connect('/');
-				socket.emit('clientInfo', { id : 'kimy', name : _name, 
+				socket.emit('clientInfo', { id : 'kimy', 
+								name : _name, 
 								number: numb, 
-								pass : 'asdf' });
-				socket.on('cid', function(data){
+								pass :  _pass});
+				socket.on('init', function(data){
 					setStatus('connection established');
 					console.log(data);
 				});	
+				socket.on("passErr", function(){
+					console.log("passErr");
+					setStatus("Wrong Password");
+				});
 			} else {alert("enter number man-_-");}
 		}
 
@@ -46,10 +52,14 @@ No log out funcionality is supported yet :)
 	<input id="phoneNumb"><br>
 	<label>Your Name</label>
 	<input id="name"><br>
+	<label>Password</label>
+	<input id="pass" type="password"><br>
 	<label>Country</label>
 	<input id="Country" value="Canada" disabled><br>
 	<p>Status : <a id="status" style="color:green;"></a></p>
 	<button onclick="init_socket();">Start</button>
 	<button onclick="disconnect()">Disconnect</button>
+
+
 </body>
 </html>
