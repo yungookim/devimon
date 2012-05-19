@@ -6,6 +6,7 @@
 	<script>
 		var socket;
 		function init_socket(){
+			console.log("click");
 			var numb = document.getElementById('phoneNumb').value;
 			var _name = document.getElementById("name").value;
 			var _pass = document.getElementById("pass").value;
@@ -29,6 +30,8 @@
 		function disconnect(){
 			socket.emit('client_close');
 			setStatus('service disabled');
+			socket = null;
+			socket.disconnect();
 		}
 
 		function setStatus(status){

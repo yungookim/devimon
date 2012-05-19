@@ -1,15 +1,17 @@
 var app = require('express').createServer(),
-	io = require('socket.io').listen(app),
-	TwilioClient = require('twilio').Client,
-	client = new TwilioClient('AC724b4080ddd54f7b8f76c5635b7c13da',
-				 'bb72ce3adfed239513c4ac8ead423feb', '69.164.219.86');
+    io = require('socket.io').listen(app),
+    TwilioClient = require('twilio').Client,
+    client = new TwilioClient('AC724b4080ddd54f7b8f76c5635b7c13da',
+			      'bb72ce3adfed239513c4ac8ead423feb', 
+                              '69.164.219.86');
 	
 var MESSAGE = ", you should go check your device right now!";
 var COUNTRY_NUMBER = {canada : '+16479316110'};
 
 io.set('heartbeat timeout', 10);
 io.set('heartbeat interval', 5);//Must be less than timeout
-io.set('log level', 1);
+io.set('log level', 4);
+
 app.listen(4000);
 
 app.get('/', function (req, res) {
@@ -17,12 +19,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/admin', function (req, res){
-	//console.log(io.sockets.clients());
-	//Count for number of connections
-	//console.log(io.sockets.clients().length);
+	//Count for number of current connections
 	res.send("Number Connected : " + io.sockets.clients().length);
 });
 
+//Handler for each socket connection
 io.sockets.on('connection', function (socket) {
 	var NUMBER, NAME, CLOSE_REQUESTED;
 
@@ -40,7 +41,6 @@ io.sockets.on('connection', function (socket) {
 		CLOSE_REQUESTED = false;
 
 		socket.emit('init', { socket_id : socket.id, status : "ok"});
-
 	});
 
 	//Disconnect handler
@@ -52,11 +52,12 @@ io.sockets.on('connection', function (socket) {
 			var phone = client.getPhoneNumber(COUNTRY_NUMBER['canada']);
 			phone.setup(function(){
 				phone.sendSms(NUMBER, NAME + MESSAGE, null, function(result){
-					console.log(result);
+					if (result.smsDetails.status == 'queued'){
+						//success
+					} else {
+						//sms failed
+					}
 					return;
-					// if (call.smsDetails.status != 'queued'){
-					//msging failed. try again after a few seconds?
-					// }	
 				});
 			});
 		} else if (CLOSE_REQUESTED == true){
@@ -67,6 +68,7 @@ io.sockets.on('connection', function (socket) {
 			return;
 		}
 	});
+
 	socket.on('client_close', function(){
 		CLOSE_REQUESTED = true;
 		socket.disconnect();
