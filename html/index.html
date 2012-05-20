@@ -3,41 +3,7 @@
 
 <body>
 	<script src="/socket.io/socket.io.js"></script>
-	<script>
-		var socket;
-		function init_socket(){
-			console.log("click");
-			var numb = document.getElementById('phoneNumb').value;
-			var _name = document.getElementById("name").value;
-			var _pass = document.getElementById("pass").value;
-			if (numb){
-				socket = io.connect('/');
-				socket.emit('clientInfo', { id : 'kimy', 
-								name : _name, 
-								number: numb, 
-								pass :  _pass});
-				socket.on('init', function(data){
-					setStatus('connection established');
-					console.log(data);
-				});	
-				socket.on("passErr", function(){
-					console.log("passErr");
-					setStatus("Wrong Password");
-				});
-			} else {alert("enter number man-_-");}
-		}
-
-		function disconnect(){
-			socket.emit('client_close');
-			setStatus('service disabled');
-			socket = null;
-			socket.disconnect();
-		}
-
-		function setStatus(status){
-			document.getElementById('status').innerHTML = status;
-		}
-	</script>
+	<script type="text/javascript" src="devimon_client.js"></script>
 <h1>What it is</h1>
 <p>Proof of concept for idea by Kyu Lee<br>
 Basically, it's a precautionary measure for situations like 
@@ -62,7 +28,5 @@ No log out funcionality is supported yet :)
 	<p>Status : <a id="status" style="color:green;"></a></p>
 	<button onclick="init_socket();">Start</button>
 	<button onclick="disconnect()">Disconnect</button>
-
-
 </body>
 </html>

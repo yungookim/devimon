@@ -18,6 +18,10 @@ app.get('/', function (req, res) {
 	res.sendfile(__dirname + '/html/index.html');
 });
 
+app.get('/devimon_client.js', function (req, res) {
+	res.sendfile(__dirname + '/html/js/devimon_client.js');
+});
+
 app.get('/admin', function (req, res){
 	//Count for number of current connections
 	res.send("Number Connected : " + io.sockets.clients().length);
