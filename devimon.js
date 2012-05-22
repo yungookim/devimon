@@ -8,8 +8,9 @@ var app = require('express').createServer(),
 var MESSAGE = ", you should go check your device right now!";
 var COUNTRY_NUMBER = {canada : '+16479316110'};
 
-io.set('heartbeat timeout', 10);
-io.set('heartbeat interval', 5);//Must be less than timeout
+//these setters should be dynamic
+io.set('heartbeat timeout', 5);
+io.set('heartbeat interval', 5);
 io.set('log level', 4);
 
 app.listen(4000);
@@ -30,6 +31,8 @@ app.get('/admin', function (req, res){
 //Handler for each socket connection
 io.sockets.on('connection', function (socket) {
 	var NUMBER, NAME, CLOSE_REQUESTED;
+
+	console.log(socket.namespace.manager.settings);
 
 	//Initialize, check id&pass
 	socket.on('clientInfo', function (data) {
