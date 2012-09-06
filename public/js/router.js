@@ -16,7 +16,6 @@ define([
 
     about : function(){
 
-
     },
 
     faq : function(){
