@@ -60,8 +60,6 @@ define([
     	self.render();
     }
 
-
-
   });
   // Our module now returns an instantiated view
   // Sometimes you might return an un-instantiated view e.g. return Landing
