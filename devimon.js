@@ -1,20 +1,76 @@
+//Web
 var express = require('express');
-    io = require('socket.io'),
-    TwilioClient = require('twilio').Client,
-    client = new TwilioClient('AC724b4080ddd54f7b8f76c5635b7c13da',
+var io = require('socket.io');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var dbCall = require('./dbCalls');
+var sha1 = require('sha1');
+
+//Tools
+var TwilioClient = require('twilio').Client;
+var client = new TwilioClient('AC724b4080ddd54f7b8f76c5635b7c13da',
 			      'bb72ce3adfed239513c4ac8ead423feb', 
                               '69.164.219.86');
 var app = module.exports = express.createServer();
 io.listen(app);
 
-app.configure(function(){
- 	app.use(express.static(__dirname + '/public'));	
- 	app.use(express.bodyParser());
+
+passport.serializeUser(function(user, done) {
+	done(null, user);
 });
 
-app.get('/', function (req, res) {
+passport.deserializeUser(function(user, done) {
+	dbCall.find_user(user.email, function (err, ret) {
+		done(err, ret);
+	});
+});
+
+
+passport.use(new LocalStrategy(
+  function(email, password, done) {
+
+  	password = sha1('hdQrBEeZfMWfecy0cz3c' + password + '9tgwfJcjKXzs4yR9RQq3');
+
+    dbCall.find_user(email, function (err, ret) {
+      if (err) { return done(err); }
+      if (!ret) {
+      	console.log('unknown user. create new');
+      	dbCall.create_user(email, password, function(err, ret){
+      		if (err) { return done(err);}
+      		return done(null, ret);
+      	});
+      	return;
+      }
+      else if (ret.password != password) {
+      	console.log('Wrong pass');
+        return done(null, false, { message: 'Invalid password' });
+      }
+
+      return done(null, ret);
+    });
+  }
+));
+
+app.configure(function(){
+	app.use(express.cookieParser());
+ 	app.use(express.static(__dirname + '/public'));	
+ 	app.use(express.bodyParser());
+ 	app.use(express.session({ secret: '1vAGxZcZz9bGS0RmwXij' }));
+	app.use(passport.initialize());
+	app.use(passport.session());
+});
+
+app.get('/', passport.authenticate('local'), function (req, res) {
+	console.log(req.isAuthenticated());
 	res.render('index');
 });
+
+app.post('/login', passport.authenticate('local'),
+  function(req, res, msg) {
+  	res.send('ok');
+  });
+
+
 
 app.get('/admin', function (req, res){
 	//Count for number of current connections

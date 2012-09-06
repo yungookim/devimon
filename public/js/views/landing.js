@@ -9,6 +9,7 @@ define([
   		'click #login_signup' : 'login',
   		'click #keep_logged_in' : 'keep_logged',
   		'click #onoff' : 'switch',
+  		'click #btn_phone_number' : 'get_phone_number'
   	},
 
     initialize : function(){
@@ -40,10 +41,15 @@ define([
 
     login : function(){
     	var self = this;
-    	var id = $('#email').val();
+    	var email = $('#email').val();
     	var pw = $('#pw').val();
-    	console.log(id + " " + pw);
-    	self.model.save();
+
+    	self.model.login(email, pw, function(ret){
+    		if (ret != 'ok'){
+    			alert("Wrong email or password!");
+    		}
+    		self.render();
+    	});
     },
 
     keep_logged : function(){
@@ -55,9 +61,17 @@ define([
     //Turn on or off socket.io
     switch : function(){
     	var self = this;
-    	self.model.get('mode') == 'off' ? self.model.set('mode', 'on') : self.model.set('mode', 'off')
+    	self.model.get('mode') == 'off' ? self.model.set('mode', 'on') : self.model.set('mode', 'off');
+    	self.model.off();
     	self.model.save();
     	self.render();
+    },
+
+    get_phone_number : function(){
+    	var number = $('#input_phone_number').val();
+    	this.model.set('phone', number);
+    	this.model.save();
+    	this.render();
     }
 
   });

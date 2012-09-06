@@ -3,10 +3,9 @@ function(){
 	var ConfigModel = Backbone.Model.extend({
 		defaults : {
 			email : '',
-			phone : '',
 			isLogged : false,
 			mode : 'off',
-			keep_logged : false			
+			keep_logged : false
 		},
 		initialize : function(){
 		
@@ -30,8 +29,25 @@ function(){
 				localStorage.setItem('mode', self.get('mode'));
 				localStorage.setItem('keep_logged', self.get('keep_logged'));
 			}
-			console.log(localStorage);
+		},
+
+		login : function(email, pw, fn){
+			var self = this;
+			$.post('/login', {username : email, password : pw}, function(ret, status){
+				console.log(ret);
+				console.log(status);
+				self.set('email', email);
+				self.set('isLogged', true);
+				self.save();
+				fn('ok');
+			});
+		},
+
+		off : function(){
+			
 		}
+
+
 	});
 
 	return ConfigModel;
