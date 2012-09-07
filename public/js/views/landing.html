@@ -79,7 +79,7 @@
 </div>
 
 <script type="text/template" id="template-logged">
-	<span id="onoff" class="label label-important" style="font-size:5em; line-height:100px; cursor:pointer;">Offline</span>
+	<span id="onoff" class="label label-important" rel="popover" data-content="Click at me bro!" style="font-size:5em; line-height:100px; cursor:pointer;">Offline</span>
 	<br>
 	{{#phone}}
 		<span class="label label-info" style="font-size:5em; line-height:100px;">
@@ -97,6 +97,5 @@
 		</div>
 	{{/phone}}
 
-
-	
+	<button id="logout" class="btn btn-inverse pull-right">Logout</button>
 </script>

@@ -27,8 +27,10 @@ CREATE TABLE `user` (
   `email` varchar(80) CHARACTER SET ascii NOT NULL DEFAULT '',
   `phone` varchar(20) CHARACTER SET ascii NOT NULL DEFAULT '',
   `password` varchar(128) CHARACTER SET ascii NOT NULL DEFAULT '',
+  `session_id` varchar(64) CHARACTER SET ascii NOT NULL DEFAULT '',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`email`),
+  KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET character_set_client = @saved_cs_client */;

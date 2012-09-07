@@ -9,34 +9,37 @@ define([
   		'click #login_signup' : 'login',
   		'click #keep_logged_in' : 'keep_logged',
   		'click #onoff' : 'switch',
-  		'click #btn_phone_number' : 'get_phone_number'
+  		'click #btn_phone_number' : 'get_phone_number',
+      'click #logout' : 'logout'
   	},
 
     initialize : function(){
+      //Register current view to global name space for access from model.
+      window.Landing = this;
     	this.model = new Config();
     },
 
     render: function(){
-		var self = this;
-		
-		$(self.el).html(Template);
+  		var self = this;
+  		
+  		$(self.el).html(Template);
 
-		if (self.model.get('isLogged'))
-		{
-			var temp = $('#template-logged').html();
-			var html = Mustache.render(temp, self.model.toJSON());
-			$('#interact').html(html);
+  		if (self.model.get('isLogged')) {
+  			var temp = $('#template-logged').html();
+  			var html = Mustache.render(temp, self.model.toJSON());
+  			$('#interact').html(html);
 
-			if (self.model.get('mode') == 'off'){
-				$('#onoff').removeClass('label-success');
-				$('#onoff').addClass('label-important');
-				$('#onoff').html('Offline');
-			} else {
-				$('#onoff').removeClass('label-important');
-				$('#onoff').addClass('label-success');
-				$('#onoff').html('Talking');
-			}
-		}
+  			if (self.model.get('mode') == 'off'){
+  				$('#onoff').removeClass('label-success');
+  				$('#onoff').addClass('label-important');
+  				$('#onoff').html('Offline');
+          $('#onoff').popover('show')
+  			} else {
+  				$('#onoff').removeClass('label-important');
+  				$('#onoff').addClass('label-success');
+  				$('#onoff').html('Talking');
+  			}
+  		}
     },
 
     login : function(){
@@ -52,6 +55,14 @@ define([
     	});
     },
 
+    logout : function(){
+      var self = this;
+      $('#onoff').popover('hide');
+      self.model.logout(function(){
+        self.render();
+      });
+    },
+
     keep_logged : function(){
     	var self = this;
     	self.model.set('keep_logged', true);
@@ -62,7 +73,6 @@ define([
     switch : function(){
     	var self = this;
     	self.model.get('mode') == 'off' ? self.model.set('mode', 'on') : self.model.set('mode', 'off');
-    	self.model.off();
     	self.model.save();
     	self.render();
     },

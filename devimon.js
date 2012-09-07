@@ -1,76 +1,83 @@
 //Web
 var express = require('express');
 var io = require('socket.io');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var dbCall = require('./dbCalls');
-var sha1 = require('sha1');
 
 //Tools
 var TwilioClient = require('twilio').Client;
 var client = new TwilioClient('AC724b4080ddd54f7b8f76c5635b7c13da',
 			      'bb72ce3adfed239513c4ac8ead423feb', 
                               '69.164.219.86');
+var uuid = require('node-uuid');
+var sha1 = require('sha1');
+
+
+
+
 var app = module.exports = express.createServer();
 io.listen(app);
 
-
-passport.serializeUser(function(user, done) {
-	done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-	dbCall.find_user(user.email, function (err, ret) {
-		done(err, ret);
-	});
-});
-
-
-passport.use(new LocalStrategy(
-  function(email, password, done) {
-
-  	password = sha1('hdQrBEeZfMWfecy0cz3c' + password + '9tgwfJcjKXzs4yR9RQq3');
-
-    dbCall.find_user(email, function (err, ret) {
-      if (err) { return done(err); }
-      if (!ret) {
-      	console.log('unknown user. create new');
-      	dbCall.create_user(email, password, function(err, ret){
-      		if (err) { return done(err);}
-      		return done(null, ret);
-      	});
-      	return;
-      }
-      else if (ret.password != password) {
-      	console.log('Wrong pass');
-        return done(null, false, { message: 'Invalid password' });
-      }
-
-      return done(null, ret);
-    });
-  }
-));
-
 app.configure(function(){
-	app.use(express.cookieParser());
  	app.use(express.static(__dirname + '/public'));	
  	app.use(express.bodyParser());
- 	app.use(express.session({ secret: '1vAGxZcZz9bGS0RmwXij' }));
-	app.use(passport.initialize());
-	app.use(passport.session());
 });
 
-app.get('/', passport.authenticate('local'), function (req, res) {
-	console.log(req.isAuthenticated());
+
+app.get('/', function (req, res) {
 	res.render('index');
 });
 
-app.post('/login', passport.authenticate('local'),
-  function(req, res, msg) {
-  	res.send('ok');
-  });
 
+app.post('/login', function(req, res, msg) {
+	dbCall.find_user(req.body.email, req.body.password, 
+		function(err, ret){
+		if (err){
+			console.log(err);
+			res.send('500');
+			return;
+		}
 
+		//Password miss match
+		if (ret === 'pwerr'){
+			res.send({msg : 'pwerr'});
+			return;
+		}
+
+		//Email DNE. Register as a new user
+		if (ret === 'emailDNE'){
+			//new user, create account
+			dbCall.create_user(req.body.email, req.body.password, 
+				function(err, ret){
+					if (err){
+						console.log(err);
+						res.send('500');
+						return;
+					}
+			});
+		}
+
+		var session_id = getSessionID();
+		var msg = {
+			msg : 'ok', 
+			sid : session_id
+		};
+		dbCall.setSession(req.body.email, session_id);
+		res.send(msg);
+	});
+});
+
+app.post('/init', function(req, res){
+	dbCall.getSession(req.body.email, req.body.sid, function(err, ret){
+		if (err) {res.send('err'); return;};
+		res.send('ok');
+	});
+});
+
+app.post('/logout', function(req, res){
+	dbCall.logout(req.body.email, function(){
+		res.send('ok');
+	});
+});
 
 app.get('/admin', function (req, res){
 	//Count for number of current connections
@@ -141,4 +148,8 @@ var COUNTRY_NUMBER = {canada : '+16479316110'};
 // 	});
 // });
 
+
+function getSessionID(){
+	return sha1(uuid.v4() + uuid.v4() + 'fj3fi3FF39fj3f9#f8s');
+}
 
