@@ -16,6 +16,7 @@ define([
     initialize : function(){
       //Register current view to global name space for access from model.
       window.Landing = this;
+      window.socket;
     	this.model = new Config();
     },
 
@@ -75,6 +76,31 @@ define([
     	self.model.get('mode') == 'off' ? self.model.set('mode', 'on') : self.model.set('mode', 'off');
     	self.model.save();
     	self.render();
+
+      if (self.model.get('mode') === 'on'){
+        window.socket = io.connect('/');
+        var socket = window.socket;
+
+        socket.emit('clientInfo', { 
+          email : self.model.get('email'), 
+          number: self.model.get('phone'), 
+          sid : self.model.get('sid')
+        });
+
+        socket.on('init', function(data){
+          console.log('connection established');
+        }); 
+
+        socket.on("error", function(data){
+          console.log(data);
+        });
+
+      } else {
+        console.log('close');
+        window.socket.emit('client_close');
+        window.socket.disconnect();
+      }
+
     },
 
     get_phone_number : function(){

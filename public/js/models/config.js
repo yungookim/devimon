@@ -19,7 +19,7 @@ function(){
 						if (ret === 'ok'){
 							self.set('isLogged', true);
 							self.set('email', localStorage.getItem('email'));
-							self.set('mode', localStorage.getItem('mode'));
+							self.set('mode', 'off');
 							self.set('keep_logged', localStorage.getItem('keep_logged'));
 							self.set('sid', localStorage.getItem('sid'));
 							if (localStorage.getItem('phone')){

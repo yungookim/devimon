@@ -18,17 +18,12 @@ function init_socket(){
 	  console.log("passErr");
 	  setStatus("Wrong Password");
 	});
-	} else {alert("enter number man-_-");}
+	}
 }
 
 function disconnect(){
 	socket.emit('client_close');
-	setStatus('service disabled');
 	socket = null;
 	socket.disconnect();
-}
-
-function setStatus(status){
-	document.getElementById('status').innerHTML = status;
 }
 
