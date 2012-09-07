@@ -7,7 +7,7 @@ function(){
 			mode : 'off',
 			keep_logged : false,
 			sid : '',
-			phone : ''
+			phone : null
 		},
 		initialize : function(){
 			var self = this;
