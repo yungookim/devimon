@@ -6,24 +6,25 @@ function(){
 			isLogged : false,
 			mode : 'off',
 			keep_logged : false,
-			sid : '',
-			phone : null
+			sid : ''
 		},
 		initialize : function(){
 			var self = this;
-			self.set('email', localStorage.getItem('email'));
-			self.set('isLogged', false);
-			self.set('mode', localStorage.getItem('mode'));
-			self.set('keep_logged', localStorage.getItem('keep_logged'));
-			self.set('sid', localStorage.getItem('sid'));
-			self.set('phone', localStorage.getItem('phone'));
 
-			if (self.get('sid')){
+			if (localStorage.getItem('sid')){
 				$.post('/init', 
-					{email : self.get('email'), sid : self.get('sid')}, 
+					{email : localStorage.getItem('email'),
+					 sid : localStorage.getItem('sid')}, 
 					function(ret){
 						if (ret === 'ok'){
 							self.set('isLogged', true);
+							self.set('email', localStorage.getItem('email'));
+							self.set('mode', localStorage.getItem('mode'));
+							self.set('keep_logged', localStorage.getItem('keep_logged'));
+							self.set('sid', localStorage.getItem('sid'));
+							if (localStorage.getItem('phone')){
+								self.set('phone', localStorage.getItem('phone'));
+							}
 							self.save();
 							window.Landing.render();
 						}
