@@ -57,7 +57,7 @@
 						<label id="keep_logged_in" class="checkbox">
 							<input type="checkbox"> Keep me logged in
 						</label>
-						<button id="login_signup" type="submit" class="btn">Sign In / Login</button>
+						<button id="login_signup" type="submit" class="btn">Sign Up / Login</button>
 					</div>
 				</div>
 
@@ -74,11 +74,22 @@
 				As soon as your browser stops talking (when the laptop is closed), <a href=".">Devimon</a> assumes that somebody has closed the laptop, possibly with the intention of stealing it, and sends you an immediate SMS message. 
 			</p>
 		</div>
-
 	</div>
 </div>
 
+
+<h2>TODO</h2>
+<ul>
+	<li>email confirmation</li>
+	<li>payment</li>
+	<li>US number support</li>
+	<li>Google analytic</li>
+	<li>backend production config</li>
+	<li>A, CNAME update : done</li>
+</ul>
+
 <script type="text/template" id="template-logged">
+<div class="ctable">
 	<span id="onoff" class="label label-important" rel="popover" data-content="Click at me bro!" style="font-size:5em; line-height:100px; cursor:pointer;">Offline</span>
 	<br>
 	{{#phone}}
@@ -99,5 +110,5 @@
 		</div>
 	{{/phone}}
 
-	
+</div>
 </script>

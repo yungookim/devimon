@@ -74,6 +74,7 @@ function(){
 				self.set('mode', 'off');
 				self.set('sid', '');
 				self.save();
+				localStorage.clear();
 				fn();
 			});
 		},

@@ -1,20 +1,13 @@
-.slabtexted .slabtext
-        {
-        display:-moz-inline-box;
-        display:inline-block
-        white-space:nowrap;
-        }
-.slabtextinactive .slabtext
-        {
-        display:inline;
-        white-space:normal;
-        font-size:1em !important;
-        letter-spacing:inherit !important;
-        word-spacing:inherit !important;
-        *letter-spacing:0 !important;
-        *word-spacing:0 !important;
-        }
-.slabtextdone .slabtext
-        {
-        display:block
-        }
+.ctable{
+        color: #353535;
+        line-height: 1.4;
+        margin-left: 10px;
+        margin-bottom:10px;
+        padding-left: 10px;
+        padding-top : 5px;
+        padding-right: 0;
+        border: 1px solid #E7E7E7;
+        border-bottom: 1px solid #DDD;
+        -webkit-box-shadow: 0 1px 3px 0 #EEE;
+        -webkit-border-radius: 3px;
+}
