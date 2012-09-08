@@ -75,10 +75,22 @@ app.post('/logout', function(req, res){
 	});
 });
 
+app.post('/get_availability', function(req, res){
+	dbCall.get_availability(req.body.email, function(err, ret){
+		if (err) return res.send('err');
+			res.send(ret)
+	});
+
+
+});
+
+
 app.get('/admin', function (req, res){
 	//Count for number of current connections
 	res.send("Number Connected : " + io.sockets.clients().length);
 });
+
+
 
 app.listen(4000);
 

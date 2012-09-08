@@ -1,9 +1,9 @@
 define([
 	'models/config',
-	'text!views/landing.html'
+	'text!views/templates.html'
 ], function(Config, Template){
   var Landing = Backbone.View.extend({
-  	el : $('#container'),
+  	el : $('#interact'),
 
   	events : {
   		'click #login_signup' : 'login',
@@ -18,17 +18,16 @@ define([
       window.Landing = this;
       window.socket;
     	this.model = new Config();
+      $('body').append(Template);
     },
 
     render: function(){
   		var self = this;
-  		
-  		$(self.el).html(Template);
 
   		if (self.model.get('isLogged')) {
   			var temp = $('#template-logged').html();
   			var html = Mustache.render(temp, self.model.toJSON());
-  			$('#interact').html(html);
+  			$(self.el).html(html);
 
   			if (self.model.get('mode') == 'off'){
   				$('#onoff').removeClass('label-success');

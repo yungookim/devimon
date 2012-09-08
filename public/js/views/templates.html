@@ -1,0 +1,30 @@
+
+<script type="text/template" id="template-logged">
+<div class="ctable">
+	<span id="onoff" class="label label-important" rel="popover" data-content="Click at me bro!" style="font-size:5em; line-height:100px; cursor:pointer;">Offline</span>
+	<br>
+	{{#phone}}
+		<span class="label label-info" style="font-size:5em; line-height:100px;">
+			<abbr title="Phone Number">P:</abbr> {{phone}}
+		</span>
+
+		<div class="row-fluid">
+			<div class="span8">
+				Trials Remaining : <span class="badge badge-info">{{remaining}}</span>
+			</div>
+
+			<button id="logout" class="btn btn-inverse pull-right" style="margin-top:20px;">Logout</button>
+		</div>
+	{{/phone}}
+
+	{{^phone}}
+		<h2>Oops, I don't have your phone number...</h2>
+		<div class="row-fluid">
+			<input id="input_phone_number" type="text" class="pull-right" placeholder="eg. 123 456 7890" style="width:300px;">
+		</div>
+		<div class="row-fluid">
+			<a id="btn_phone_number" class="btn btn-default pull-right">Here you go<a>
+		</div>
+	{{/phone}}
+</div>
+</script>

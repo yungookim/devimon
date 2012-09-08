@@ -21,6 +21,96 @@
 	</div>
 
 	<article id="container" class="container">
+		
+		<div class="container">
+			<div class="row-fluid">
+				<div class="span10">
+					<h1 style="font-size:10em; line-height:100px;">Devimon</h1>
+				</div>
+				
+			</div>
+			<div class="row-fluid">
+				<div class="span8 pull-right">
+					<h1 style="font-size:4em; line-height:45px;">Keeping your device safe.</h1>
+				</div>
+			</div>
+		</div>
+
+		<hr style="border-top:2px solid #A0A0A0;">
+
+		<div class="container">
+			<div class="row-fluid">
+				<div class="span6">
+					<article >
+						<h5>About</h5>
+						<hr>
+						<p class="lead">
+							You are working on your lovely dovely <strong>laptop</strong> in a coffee shop, library, school, or any public spaces,
+							and you have to step out for coffee, smoke, washroom, friend, etc.
+							<strong>Simply put <a href=".">Devimon</a> on</strong> and you are all set to go!
+						</p>
+					</article>
+				</div>
+				<div class="span6" id="interact">
+					<h5>Sign Up</h5>
+
+					<span class="label label-important" style="font-size:2em; line-height:20px; cursor:pointer;">Almost done. Launching soon :)</span>
+
+					<hr>
+					<div class="form-horizontal">
+
+						<div class="control-group">
+							<label class="control-label" for="email">Email</label>
+							<div class="controls">
+								<input type="text" id="email" placeholder="Email">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="password">Password</label>
+							<div class="controls">
+								<input type="password" id="pw" placeholder="Password">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<div class="controls">
+								<label id="keep_logged_in" class="checkbox">
+									<input type="checkbox"> Keep me logged in
+								</label>
+								<button id="login_signup" type="submit" class="btn">Sign Up / Login</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row-fluid">
+				<div class="span12">
+					<h5>How it works</h5>
+					<hr>
+					<p class="lead">
+						When you bring <a href=".">Devimon</a> up on your browser, the browser maintains a conversation with  <a href=".">Devimon</a>.
+						As soon as your browser stops talking (when the laptop is closed), <a href=".">Devimon</a> assumes that somebody has closed the laptop, possibly with the intention of stealing it, and sends you an immediate SMS message. 
+					</p>
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<h2>TODO</h2>
+		<ul>
+			<li>email confirmation</li>
+			<li>payment</li>
+			<li>US number support : done</li>
+			<li>Google analytic</li>
+			<li>backend production config</li>
+			<li>A, CNAME update : done</li>
+		</ul>
+
 
 	</article>
 
@@ -41,6 +131,38 @@
 	<script type="text/javascript" src="js/ext/backbone.min.0.9.2.js"></script>
 	<script type="text/javascript" src="js/ext/mustache.js"></script>
 	<script data-main="js/main" src="js/ext/require.2.0.2.min.js"></script>
+
+<div id="payment" style="position:fixed; right:0px; top:50px;">
+	<a class="wepay-widget-button wepay-green" id="wepay_widget_anchor_504ab5c8bf98a" href="https://www.wepay.com/stores/245465/item/715176">Get One Month Subscription</a>
+	<script type="text/javascript">
+		var WePay = WePay || {};
+		WePay.load_widgets = WePay.load_widgets || function() { };
+		WePay.widgets = WePay.widgets || [];
+		WePay.widgets.push( {
+			object_id: 715176,
+			widget_type: "store_item_buy_now",
+			anchor_id: "wepay_widget_anchor_504ab5c8bf98a",
+			widget_options: {
+				store_id: 245465,
+				show_item_custom_options: true,
+				show_item_images: true,
+				show_item_price: true,
+				button_text_sold_out: "Sold Out",
+				button_text: "Get One Month Subscription"
+			}
+		});
+		if (!WePay.script) {
+			WePay.script = document.createElement('script');WePay.script.type = 'text/javascript';WePay.script.async = true;
+			WePay.script.src = 'https://static.wepay.com/min/js/widgets.v2.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(WePay.script, s);
+		} else if (WePay.load_widgets) {
+			WePay.load_widgets();
+		}
+	</script>
+</div>
+
+
+
 
 </body>
 </html>

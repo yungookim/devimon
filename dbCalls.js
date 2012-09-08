@@ -63,6 +63,14 @@ module.exports = {
   		//Assume log out was possible. Client will be logged out regardless of the result
   		fn();
   	});
+  },
+
+  get_availability : function(email, fn){
+  	db.querySingle('SELECT free_remaining, paid_time from ' + USER_TABLE + ' WHERE email=?',
+  		[email], function(err, ret){
+  			if (err) return fn(err);
+  			return fn(null, ret);
+  		});
   }
 
  //  save_record : function(signature, nick, score, data, next){

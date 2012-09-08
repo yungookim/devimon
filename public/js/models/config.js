@@ -10,6 +10,7 @@ function(){
 		},
 		initialize : function(){
 			var self = this;
+			window.config = self;
 
 			if (localStorage.getItem('sid')){
 				$.post('/init', 
@@ -25,11 +26,22 @@ function(){
 							if (localStorage.getItem('phone')){
 								self.set('phone', localStorage.getItem('phone'));
 							}
-							self.save();
-							window.Landing.render();
+							
+							$.post('/get_availability', {email : self.get('email')}, function(ret){
+								if (ret === 'err'){
+									alert('error');
+								}
+								console.log(ret.free_remaining);
+								self.set('remaining', ret.free_remaining);
+								
+								self.save();
+								window.Landing.render();
+							});
+							
 						}
 				});
 			}
+
 		},
 
 		save : function(fn){
