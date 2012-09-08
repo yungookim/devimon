@@ -3,7 +3,6 @@ var express = require('express');
 var dbCall = require('./dbCalls');
 
 //Tools
-var email = require("emailjs");
 var uuid = require('node-uuid');
 var sha1 = require('sha1');
 var io = require('socket.io');
@@ -19,16 +18,6 @@ app.configure(function(){
  	app.use(express.static(__dirname + '/public'));	
  	app.use(express.bodyParser());
 });
-
-//Configure confirmation email
-var email_server  = email.server.connect({
-   user:    "admin@devimon.net", 
-   password:"password", 
-   host:    "smtp.gmail.com", 
-   ssl:     true
-
-});
-
 
 app.get('/', function (req, res) {
 	res.render('index');
