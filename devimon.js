@@ -80,9 +80,8 @@ app.post('/get_availability', function(req, res){
 		if (err) return res.send('err');
 			res.send(ret)
 	});
-
-
 });
+
 
 
 app.get('/admin', function (req, res){
@@ -106,8 +105,12 @@ var COUNTRY_NUMBER = {canada : '+16479316110'};
 //Handler for each socket connection
 io.sockets.on('connection', function (socket) {
 	var CLOSE_REQUESTED;
-
 	console.log(socket.namespace.manager.settings);
+
+	dbCall.decreament_availability(req.body.email, function(err, ret){
+		if (err) return res.send('err');
+			res.send(ret)
+	});
 
 	//Initialize, check id&pass
 	socket.on('clientInfo', function (data) {

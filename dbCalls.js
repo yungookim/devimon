@@ -71,6 +71,16 @@ module.exports = {
   			if (err) return fn(err);
   			return fn(null, ret);
   		});
+  },
+
+  decreament_availability : function(email, fn){
+  	db.query('UPDATE ' + USER_TABLE + ' SET free_remaining=free_remaining-1 WHERE email=?',
+  		[email], function(err){
+  			if (err){
+  				console.log(err);
+  				return;
+  			}
+  		});
   }
 
  //  save_record : function(signature, nick, score, data, next){
