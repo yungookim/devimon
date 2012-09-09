@@ -91,7 +91,7 @@ app.get('/admin', function (req, res){
 
 
 
-app.listen(4000);
+app.listen(80);
 
 
 //these setters should be dynamic
