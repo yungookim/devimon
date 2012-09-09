@@ -51,7 +51,7 @@ module.exports = {
   },
 
   getSession : function(email, session_id, fn){
-  	db.querySingle('SELECT email, session_id FROM ' + USER_TABLE  + ' WHERE email=? AND session_id=?',
+  	db.querySingle('SELECT email, session_id, phone, used FROM ' + USER_TABLE  + ' WHERE email=? AND session_id=?',
   		[email, session_id], function(err, ret){
 			if (err) return fn(err);
 			return fn(null, ret);
@@ -81,6 +81,17 @@ module.exports = {
   				return;
   			}
   		});
+  },
+
+  save_number : function(email, phone, sid){
+  	db.query('UPDATE ' + USER_TABLE + ' SET phone=? WHERE email=? AND session_id=?',
+  		[phone, email, sid], function(err, ret){
+  			if (err){
+  				console.log(err);
+  			}
+  			return;
+  		});
+
   }
 
  //  save_record : function(signature, nick, score, data, next){

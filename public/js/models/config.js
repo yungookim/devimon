@@ -6,6 +6,7 @@ function(){
 			isLogged : false,
 			mode : 'off',
 			keep_logged : false,
+			used : 0,
 			sid : ''
 		},
 		initialize : function(){
@@ -17,27 +18,22 @@ function(){
 					{email : localStorage.getItem('email'),
 					 sid : localStorage.getItem('sid')}, 
 					function(ret){
-						if (ret === 'ok'){
-							self.set('isLogged', true);
-							self.set('email', localStorage.getItem('email'));
-							self.set('mode', 'off');
-							self.set('keep_logged', localStorage.getItem('keep_logged'));
-							self.set('sid', localStorage.getItem('sid'));
-							if (localStorage.getItem('phone')){
-								self.set('phone', localStorage.getItem('phone'));
-							}
-							
-							$.post('/get_used', {email : self.get('email')}, function(ret){
-								if (ret === 'err'){
-									alert('error');
-								}
-								console.log(ret);
-								self.set('used', ret.used);
-								self.save();
-								window.Landing.render();
-							});
-							
+						if (ret === 'err'){
+							console.log(ret);
+							return;
+							//Then just the default login kicks in.
 						}
+						self.set('isLogged', true);
+						self.set('email', localStorage.getItem('email'));
+						self.set('mode', 'off');
+						self.set('keep_logged', localStorage.getItem('keep_logged'));
+						self.set('sid', ret.session_id);
+						if (ret.phone){
+							self.set('phone', ret.phone);
+						}
+						self.set('used', ret.used);
+						self.save();
+						window.Landing.render();
 				});
 			}
 
@@ -90,8 +86,15 @@ function(){
 			});
 		},
 
-		off : function(){
-			
+		save_number : function(){
+			var self = this;
+			$.post('/save_number', 
+				{email : self.get('email'), 
+				phone : self.get('phone'),
+				sid : self.get('sid')},
+				function(ret){
+					//Doesnt have to do anything.					
+				});
 		}
 
 

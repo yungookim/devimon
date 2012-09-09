@@ -6,7 +6,7 @@ define([
   	el : $('#interact'),
 
   	events : {
-  		'click #login_signup' : 'login',
+  		'click .login_signup' : 'login',
   		'click #keep_logged_in' : 'keep_logged',
   		'click #onoff' : 'switch',
   		'click #btn_phone_number' : 'get_phone_number',
@@ -33,12 +33,17 @@ define([
   				$('#onoff').removeClass('label-success');
   				$('#onoff').addClass('label-important');
   				$('#onoff').html('Offline');
-          $('#onoff').popover('show')
+          $('#onoff').popover('show');
   			} else {
   				$('#onoff').removeClass('label-important');
   				$('#onoff').addClass('label-success');
   				$('#onoff').html('Talking');
   			}
+
+        if(!self.model.get('phone')){
+          $('#onoff').popover('hide');
+        }
+
   		}
     },
 
@@ -46,6 +51,11 @@ define([
     	var self = this;
     	var email = $('#email').val();
     	var pw = $('#pw').val();
+
+      if (email.length < 3 || pw < 3){
+        $('#err').html("Please enter in your email || password!");
+        return;
+      }
 
     	self.model.login(email, pw, function(ret){
     		if (ret != 'ok'){
@@ -59,7 +69,8 @@ define([
       var self = this;
       $('#onoff').popover('hide');
       self.model.logout(function(){
-        self.render();
+        //self.render();
+        location.reload();
       });
     },
 
@@ -78,8 +89,10 @@ define([
     	self.render();
 
       if (self.model.get('mode') === 'on'){
+
         window.socket = io.connect('/');
         var socket = window.socket;
+        self.model.set('used', self.model.get('used')+1);
 
         socket.emit('clientInfo', { 
           email : self.model.get('email'), 
@@ -89,11 +102,14 @@ define([
 
         socket.on('init', function(data){
           console.log('connection established');
-          self.model.set('used', self.model.get('used')+1);
+          self.render();
         }); 
 
         socket.on("error", function(data){
-          console.log(data);
+          alert('error');
+          self.model.set('mode', 'off');
+          self.render();
+          return;
         });
 
       } else {
@@ -109,6 +125,7 @@ define([
     	this.model.set('phone', number);
     	this.model.save();
     	this.render();
+      this.model.save_number();
     }
 
   });

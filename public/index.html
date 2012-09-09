@@ -55,7 +55,7 @@
 
 			<div class="row-fluid">
 				<div class="span12">
-					<!-- Place for Banner -->
+					<span class="label label-warning" style="font-size:2em; line-height:20px; cursor:pointer;">Running on alpha version! :)</span>
 				</div>
 			</div>
 
@@ -73,8 +73,6 @@
 				</div>
 				<div class="span6" id="interact">
 					<h5>Sign Up</h5>
-
-					<span class="label label-important" style="font-size:2em; line-height:20px; cursor:pointer;">Almost done. Launching soon :)</span>
 
 					<hr>
 					<div class="form-horizontal">
@@ -94,11 +92,18 @@
 						</div>
 
 						<div class="control-group">
+							<a id="err" style="color:red;"></a>
+						</div>
+
+						<div class="control-group">
 							<div class="controls">
 								<label id="keep_logged_in" class="checkbox">
 									<input type="checkbox"> Keep me logged in
 								</label>
-								<button id="login_signup" type="submit" class="btn">Sign Up / Login</button>
+
+								<button class="btn btn-info login_signup">Sign Up</button>
+
+								<button class="btn btn-warning login_signup">Login</button>
 							</div>
 						</div>
 
@@ -117,15 +122,6 @@
 				</div>
 			</div>
 		</div>
-
-
-		<h2>TODO</h2>
-		<ul>
-			<li>email confirmation</li>
-			<li>backend production config</li>
-		</ul>
-
-
 	</article>
 
 	<footer>

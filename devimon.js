@@ -65,7 +65,7 @@ app.post('/login', function(req, res, msg) {
 app.post('/init', function(req, res){
 	dbCall.getSession(req.body.email, req.body.sid, function(err, ret){
 		if (err) {res.send('err'); return;};
-		res.send('ok');
+		res.send(ret);
 	});
 });
 
@@ -77,12 +77,15 @@ app.post('/logout', function(req, res){
 
 app.post('/get_used', function(req, res){
 	dbCall.get_used(req.body.email, function(err, ret){
-		if (err) return res.send('err');
-			res.send(ret);
+		if (err) {return res.send('err');}
+		res.send(ret);
 	});
 });
 
-
+app.post('/save_number', function(req, res){
+	dbCall.save_number(req.body.email, req.body.phone, req.body.sid);
+	res.send('ok');
+});
 
 app.get('/admin', function (req, res){
 	//Count for number of current connections
@@ -92,7 +95,6 @@ app.get('/admin', function (req, res){
 
 
 app.listen(80);
-
 
 //these setters should be dynamic
 io.set('heartbeat timeout', 6);
@@ -105,25 +107,35 @@ var COUNTRY_NUMBER = {canada : '+16479316110'};
 //Handler for each socket connection
 io.sockets.on('connection', function (socket) {
 	var CLOSE_REQUESTED;
+	var phone_numb;
 	// console.log(socket.namespace.manager.settings);
-
 
 	//Initialize, check id&pass
 	socket.on('clientInfo', function (data) {
 		// console.log(data);
+		phone_numb = data.phone;
 
 		dbCall.used_increament(data.email, function(err, ret){
-			if (err) return res.send('err');
-				res.send(ret);
+			console.log(err);
 		});
-		// if(data.pass != "wat!"){
-		// 	socket.emit("passErr", null);
-		// 	CLOSE_REQUESTED = true;
-		// 	socket.disconnect();
-		// 	return;
-		// }
-		CLOSE_REQUESTED = false;
 
+		//Check session and basic validation
+		dbCall.getSession(data.email, data.sid, function(err, ret){
+			if (err){
+				socket.emit("error", null);
+				CLOSE_REQUESTED = true;
+				socket.disconnect();
+				return;
+			}
+			if (!ret){
+				socket.emit("error", null);
+				CLOSE_REQUESTED = true;
+				socket.disconnect();
+				return;
+			}
+		});
+
+		CLOSE_REQUESTED = false;
 		socket.emit('init', { socket_id : socket.id, status : "ok"});
 	});
 
@@ -132,19 +144,21 @@ io.sockets.on('connection', function (socket) {
 		console.log("close requested : " + CLOSE_REQUESTED);
 		//Client illegal shut down
 		if (CLOSE_REQUESTED == false){
-			//This number has to change according to the Country
-			// var phone = client.getPhoneNumber(COUNTRY_NUMBER['canada']);
-			// phone.setup(function(){
-			// 	phone.sendSms(NUMBER, NAME + MESSAGE, null, function(result){
-			// 		if (result.smsDetails.status == 'queued'){
-			// 			//success
-			// 		} else {
-			// 			//sms failed
-			// 		}
-			// 		return;
-			// 	});
-			// });
-			console.log('success');
+			// This number has to change according to the Country
+			var phone = client.getPhoneNumber(COUNTRY_NUMBER['canada']);
+			phone.setup(function(){
+				phone.sendSms(phone_numb, MESSAGE, null, function(result){
+					if (result.smsDetails.status == 'queued'){
+						//success
+						console.log('SMS sent to ' + phone_numb);
+					} else {
+						//sms failed
+						console.log('SMS error with ' + phone_numb);
+					}
+					return;
+				});
+			});
+			
 		} else if (CLOSE_REQUESTED == true){
 			console.log('current socket is goner');
 			return;
