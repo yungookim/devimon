@@ -65,16 +65,16 @@ module.exports = {
   	});
   },
 
-  get_availability : function(email, fn){
-  	db.querySingle('SELECT free_remaining, paid_time from ' + USER_TABLE + ' WHERE email=?',
+  get_used : function(email, fn){
+  	db.querySingle('SELECT used from ' + USER_TABLE + ' WHERE email=?',
   		[email], function(err, ret){
-  			if (err) return fn(err);
+  			if (err) {console.log(err); return fn(err)};
   			return fn(null, ret);
   		});
   },
 
-  decreament_availability : function(email, fn){
-  	db.query('UPDATE ' + USER_TABLE + ' SET free_remaining=free_remaining-1 WHERE email=?',
+  used_increament : function(email, fn){
+  	db.query('UPDATE ' + USER_TABLE + ' SET used=used+1 WHERE email=?',
   		[email], function(err){
   			if (err){
   				console.log(err);

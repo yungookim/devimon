@@ -27,16 +27,16 @@ function(){
 								self.set('phone', localStorage.getItem('phone'));
 							}
 							
-							$.post('/get_availability', {email : self.get('email')}, function(ret){
+							$.post('/get_used', {email : self.get('email')}, function(ret){
 								if (ret === 'err'){
 									alert('error');
 								}
-								console.log(ret.free_remaining);
-								self.set('remaining', ret.free_remaining);
-
+								console.log(ret);
+								self.set('used', ret.used);
 								self.save();
 								window.Landing.render();
 							});
+							
 						}
 				});
 			}

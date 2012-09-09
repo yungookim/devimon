@@ -75,10 +75,10 @@ app.post('/logout', function(req, res){
 	});
 });
 
-app.post('/get_availability', function(req, res){
-	dbCall.get_availability(req.body.email, function(err, ret){
+app.post('/get_used', function(req, res){
+	dbCall.get_used(req.body.email, function(err, ret){
 		if (err) return res.send('err');
-			res.send(ret)
+			res.send(ret);
 	});
 });
 
@@ -112,9 +112,9 @@ io.sockets.on('connection', function (socket) {
 	socket.on('clientInfo', function (data) {
 		// console.log(data);
 
-		dbCall.decreament_availability(data.email, function(err, ret){
+		dbCall.used_increament(data.email, function(err, ret){
 			if (err) return res.send('err');
-				res.send(ret)
+				res.send(ret);
 		});
 		// if(data.pass != "wat!"){
 		// 	socket.emit("passErr", null);

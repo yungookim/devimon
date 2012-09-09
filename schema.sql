@@ -30,8 +30,7 @@ CREATE TABLE `user` (
   `session_id` varchar(64) CHARACTER SET ascii NOT NULL DEFAULT '',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email_confirmed` varchar(1) CHARACTER SET ascii NOT NULL DEFAULT 'F',
-  `paid_time` varchar(30) NOT NULL DEFAULT '',
-  `free_remaining` INT NOT NULL DEFAULT 5,
+  `used` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`email`),
   KEY (`session_id`),
   KEY (`phone`)
