@@ -105,17 +105,17 @@ var COUNTRY_NUMBER = {canada : '+16479316110'};
 //Handler for each socket connection
 io.sockets.on('connection', function (socket) {
 	var CLOSE_REQUESTED;
-	console.log(socket.namespace.manager.settings);
+	// console.log(socket.namespace.manager.settings);
 
-	dbCall.decreament_availability(req.body.email, function(err, ret){
-		if (err) return res.send('err');
-			res.send(ret)
-	});
 
 	//Initialize, check id&pass
 	socket.on('clientInfo', function (data) {
-		console.log(data);
+		// console.log(data);
 
+		dbCall.decreament_availability(data.email, function(err, ret){
+			if (err) return res.send('err');
+				res.send(ret)
+		});
 		// if(data.pass != "wat!"){
 		// 	socket.emit("passErr", null);
 		// 	CLOSE_REQUESTED = true;

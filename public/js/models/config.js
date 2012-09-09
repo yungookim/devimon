@@ -33,11 +33,10 @@ function(){
 								}
 								console.log(ret.free_remaining);
 								self.set('remaining', ret.free_remaining);
-								
+
 								self.save();
 								window.Landing.render();
 							});
-							
 						}
 				});
 			}
