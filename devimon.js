@@ -9,7 +9,7 @@ var io = require('socket.io');
 var TwilioClient = require('twilio').Client;
 var client = new TwilioClient('AC724b4080ddd54f7b8f76c5635b7c13da',
 			      'bb72ce3adfed239513c4ac8ead423feb', 
-                              '69.164.219.86');
+                              'devimon.net');
 
 var app = module.exports = express.createServer();
 io = io.listen(app);
@@ -102,7 +102,7 @@ io.set('heartbeat interval', 3);
 io.set('log level', 4);
 
 var MESSAGE = "This is Devimon. It seems that your device may be at risk!";
-var COUNTRY_NUMBER = {canada : '+16479316110'};
+var CANADA = '+16479316110';
 
 //Handler for each socket connection
 io.sockets.on('connection', function (socket) {
@@ -112,8 +112,7 @@ io.sockets.on('connection', function (socket) {
 
 	//Initialize, check id&pass
 	socket.on('clientInfo', function (data) {
-		// console.log(data);
-		phone_numb = data.phone;
+		phone_numb = data.number;
 
 		dbCall.used_increament(data.email, function(err, ret){
 			console.log(err);
@@ -145,16 +144,18 @@ io.sockets.on('connection', function (socket) {
 		//Client illegal shut down
 		if (CLOSE_REQUESTED == false){
 			// This number has to change according to the Country
-			var phone = client.getPhoneNumber(COUNTRY_NUMBER['canada']);
+			var phone = client.getPhoneNumber(CANADA);
 			phone.setup(function(){
-				phone.sendSms(phone_numb, MESSAGE, null, function(result){
-					if (result.smsDetails.status == 'queued'){
+	
+				//function(from, to, body, uri, suc, err)
+				phone.sendSms(phone_numb, MESSAGE, null, function(ret){
+					if (ret.smsDetails.status == 'queued'){
 						//success
-						console.log('SMS sent to ' + phone_numb);
 					} else {
 						//sms failed
 						console.log('SMS error with ' + phone_numb);
 					}
+					console.log(ret);
 					return;
 				});
 			});

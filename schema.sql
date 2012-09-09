@@ -19,7 +19,7 @@
 -- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
@@ -35,6 +35,17 @@ CREATE TABLE `user` (
   KEY (`session_id`),
   KEY (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `TWILIO_LOG` (
+	`id` INT(50) NOT NULL AUTO_INCREMENT,
+	`from` VARCHAR(20) CHARACTER SET ascii NOT NULL DEFAULT '',
+	`to` VARCHAR(20) CHARACTER SET ascii NOT NULL DEFAULT '',
+	`sent_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`email` varchar(80) CHARACTER SET ascii NOT NULL DEFAULT '',
+	`raw` TEXT,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
