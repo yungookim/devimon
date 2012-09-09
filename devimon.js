@@ -92,8 +92,6 @@ app.get('/admin', function (req, res){
 	res.send("Number Connected : " + io.sockets.clients().length);
 });
 
-
-
 app.listen(80);
 
 //these setters should be dynamic
@@ -115,24 +113,24 @@ io.sockets.on('connection', function (socket) {
 		phone_numb = data.number;
 
 		dbCall.used_increament(data.email, function(err, ret){
-			console.log(err);
+			// console.log(err);
 		});
 
 		//Check session and basic validation
-		dbCall.getSession(data.email, data.sid, function(err, ret){
-			if (err){
-				socket.emit("error", null);
-				CLOSE_REQUESTED = true;
-				socket.disconnect();
-				return;
-			}
-			if (!ret){
-				socket.emit("error", null);
-				CLOSE_REQUESTED = true;
-				socket.disconnect();
-				return;
-			}
-		});
+		// dbCall.getSession(data.email, data.sid, function(err, ret){
+		// 	if (err){
+		// 		socket.emit("error", null);
+		// 		CLOSE_REQUESTED = true;
+		// 		socket.disconnect();
+		// 		return;
+		// 	}
+		// 	if (!ret){
+		// 		socket.emit("error", null);
+		// 		CLOSE_REQUESTED = true;
+		// 		socket.disconnect();
+		// 		return;
+		// 	}
+		// });
 
 		CLOSE_REQUESTED = false;
 		socket.emit('init', { socket_id : socket.id, status : "ok"});
