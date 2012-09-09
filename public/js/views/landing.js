@@ -72,11 +72,17 @@ define([
     //Turn on or off socket.io
     switch : function(){
     	var self = this;
+
+      if (self.model.get('remaining') < 1){
+        alert('Oops! your trial is over :(');
+        return;
+      }
+
     	self.model.get('mode') == 'off' ? self.model.set('mode', 'on') : self.model.set('mode', 'off');
     	self.model.save();
     	self.render();
 
-      if (self.model.get('mode') === 'on'){
+      if (self.model.get('mode') === 'on' && self.model.get('remaining') > 0){
         window.socket = io.connect('/');
         var socket = window.socket;
 
@@ -88,6 +94,7 @@ define([
 
         socket.on('init', function(data){
           console.log('connection established');
+          self.model.set('remaining', self.model.get('remaining')-1);
         }); 
 
         socket.on("error", function(data){
