@@ -27,13 +27,38 @@
 			<a class="brand" href=".">Devimon</a>
 			<ul class="nav">
 				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#">FAQ</a></li>
-				<li><a href="#">About</a></li>
+			<!-- 	<li><a href="#">FAQ</a></li>
+				<li><a href="#">About</a></li> -->
 			</ul>
 		</div>
 	</div>
 
 	<article id="container" class="container">
+
+		<div class="ctable" style="padding:20px 20px 20px 20px;">
+			Greetings CSC454 classmates!
+			As I did not have enough time to explain what this site does during my pitch time, allow me to elaborate a bit more.
+			<br>
+			<br>
+			For the course, CSC454, I was trying to come up with something that is actually doable within the duration of this course, and something that solves a very specific problem. 
+			So I brought out an old project of mine, hacked it up in a few hours, and here I present to you the MVP of it.<br>
+			Although I wasn't able to finish up some of the minor stuff, such as email confirmation and password reset, the core feature actually works, so give it a try! 
+			<br>(Might be a little buggy though)
+			<br><br>
+			<ol>
+				<li>Sign up/log in</li>
+				<li>Enter your phone number</li>
+				<li>Close the browser or the lid of your laptop (given that it goes to suspend mode upon closing).</li>
+				<li>You should get a sms message within a few sec. Depending on the traffic at the time.</li>
+			</ol>
+			<br>
+			The mission statement would be "enhancing your 'mobile computing' experience on public places." 
+			<br><br>
+			If you are interseted or more ideas, drop me an email at <a href="mailto:yungookim@gmail.com">yungookim@gmail.com</a>.
+			And as well, I'm available for hire too!
+			<br><br>
+			Thanks for checking the site out!
+		</div>
 
 		<div class="container">
 			<div class="row-fluid">
@@ -148,51 +173,49 @@
 	<script type="text/javascript" src="js/ext/mustache.js"></script>
 	<script data-main="js/main" src="js/ext/require.2.0.2.min.js"></script>
 
-<div id="payment" style="position:fixed; right:10px; top:50px; padding-right:10px; background-color:White;" class="ctable">
+<div id="payment" style="position:fixed; right:10px; top:50px; padding-right:10px; background-color:White;" class="ctable hide">
+	<div class="row-fluid">
+		<div class="span3">
+			<div style="margin-top:40px;">
 
-
-<div class="row-fluid">
-	<div class="span3">
-		<div style="margin-top:40px;">
-
-			<a class="wepay-widget-button wepay-green" id="wepay_widget_anchor_504c10f8c7d05" href="https://www.wepay.com/donations/157824">Donate</a>
-			<script type="text/javascript">
-				var WePay = WePay || {};
-				WePay.load_widgets = WePay.load_widgets || function() { };
-				WePay.widgets = WePay.widgets || [];
-				WePay.widgets.push( {
-					object_id: 157824,
-					widget_type: "donation_campaign",
-					anchor_id: "wepay_widget_anchor_504c10f8c7d05",
-					widget_options: {
-						allow_cover_fee: true,
-						enable_recurring: true,
-						allow_anonymous: true,
-						button_text: "Donate"
+				<a class="wepay-widget-button wepay-green" id="wepay_widget_anchor_504c10f8c7d05" href="https://www.wepay.com/donations/157824">Donate</a>
+				<script type="text/javascript">
+					var WePay = WePay || {};
+					WePay.load_widgets = WePay.load_widgets || function() { };
+					WePay.widgets = WePay.widgets || [];
+					WePay.widgets.push( {
+						object_id: 157824,
+						widget_type: "donation_campaign",
+						anchor_id: "wepay_widget_anchor_504c10f8c7d05",
+						widget_options: {
+							allow_cover_fee: true,
+							enable_recurring: true,
+							allow_anonymous: true,
+							button_text: "Donate"
+						}
+					});
+					if (!WePay.script) {
+						WePay.script = document.createElement('script');WePay.script.type = 'text/javascript';WePay.script.async = true;
+						WePay.script.src = 'https://static.wepay.com/min/js/widgets.v2.js';
+						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(WePay.script, s);
+					} else if (WePay.load_widgets) {
+						WePay.load_widgets();
 					}
-				});
-				if (!WePay.script) {
-					WePay.script = document.createElement('script');WePay.script.type = 'text/javascript';WePay.script.async = true;
-					WePay.script.src = 'https://static.wepay.com/min/js/widgets.v2.js';
-					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(WePay.script, s);
-				} else if (WePay.load_widgets) {
-					WePay.load_widgets();
-				}
-			</script>
+				</script>
+			</div>
+		</div>
+
+		<div class="span8">
+			<img src="http://robohash.org/devimon?size=150x150"/>
 		</div>
 	</div>
 
-	<div class="span8">
-		<img src="http://robohash.org/devimon?size=150x150"/>
-	</div>
-
-</div>
-<a>Devimon needs your help to function!</a>
-<br>
-<a>Even a very small contribution helps.</a>
-<br>
-<a class="pull-right">Thanks!</a>
-<hr>
+	<a>Devimon needs your help to function!</a>
+	<br>
+	<a>Even a very small contribution helps.</a>
+	<br>
+	<a class="pull-right">Thanks!</a>
+	<hr>
 </div>
 
 

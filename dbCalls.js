@@ -11,6 +11,7 @@ db.init('web', 'web', 'devimon', 'localhost', 3306);
 module.exports = {
 
   create_user : function(email, password, next){
+    //TODO Clean this up. Stupid hashing.
   	password = sha1('1E2EioAZIDTQwwneAsX6!dfan' + password + '1E2EioAZIDTQwwneAsX6!EF!dfn');
 
 	db.query('INSERT into ' + USER_TABLE + ' SET id=?, email=?, password=?',
@@ -22,6 +23,7 @@ module.exports = {
   },
 
   find_user : function(email, password, next){
+    //TODO Clean this up. Stupid hashing.
   	password = sha1('1E2EioAZIDTQwwneAsX6!dfan' + password + '1E2EioAZIDTQwwneAsX6!EF!dfn');
 
 	db.querySingle('SELECT email, password FROM ' + USER_TABLE  + ' WHERE email=?',
